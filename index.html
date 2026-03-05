@@ -82,12 +82,12 @@ form.addEventListener('submit', async (e) => {
 
   const formData = new FormData(form);
 
-/*  try {
+ try {
     const res = await fetch('https://api.web3forms.com/submit',{
       method:'POST',
       body:formData
     });
-    const result = await res.json();*/
+    const result = await res.json();
 
     if(result.success){
       // Redirect to celebration page with name in URL

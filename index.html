@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>🎉 Welcome World </title>
+<title>🎉 Welcome World</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
@@ -55,8 +55,8 @@
 <div class="container">
   <h1>🎉 Write Your Name </h1>
 
-  <form id="wish-form" method="POST" action="https://api.web3forms.com/submit">
-    <input type="hidden" name="access_key" value="328d9a61-8ca6-4299-a848-920a40c4e44a"/>
+  <!-- You can keep this form for styling, no actual submission will happen -->
+  <form id="wish-form">
     <input type="text" name="username" placeholder="Write your name Doctor Mam" required />
     <button type="submit">Submit</button>
   </form>
@@ -77,12 +77,16 @@ form.addEventListener('submit', async (e) => {
     return;
   }
 
-  status.textContent = "welcome to world... ⏳";
+  status.textContent = "Welcome to the world... ⏳";
   form.querySelector('button').disabled = true;
 
+  const username = encodeURIComponent(nameInput.value.trim());
+
+  // ------------------- COMMENTED OUT WEB3FORMS -------------------
+  /*
   const formData = new FormData(form);
 
- try {
+  try {
     const res = await fetch('https://api.web3forms.com/submit',{
       method:'POST',
       body:formData
@@ -90,8 +94,6 @@ form.addEventListener('submit', async (e) => {
     const result = await res.json();
 
     if(result.success){
-      // Redirect to celebration page with name in URL
-      const username = encodeURIComponent(nameInput.value.trim());
       window.location.href = `celebration.html?name=${username}`;
     } else {
       status.textContent = "❌ Submission failed. Try again.";
@@ -99,12 +101,13 @@ form.addEventListener('submit', async (e) => {
   } catch (err){
     status.textContent = "❌ Network error. Check your connection.";
   }
+  */
+  // -------------------------------------------------------------
 
-  form.querySelector('button').disabled = false;
+  // Directly redirect without triggering email
+  window.location.href = `celebration.html?name=${username}`;
 });
 </script>
 
 </body>
 </html>
-
-

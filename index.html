@@ -53,7 +53,7 @@
 <body>
 
 <div class="container">
-  <h1>🎉 Write Your Name Dractor mam</h1>
+  <h1>🎉 Write Your Name Doctor mam</h1>
 
   <form id="wish-form" method="POST" action="https://api.web3forms.com/submit">
     <input type="hidden" name="access_key" value="328d9a61-8ca6-4299-a848-920a40c4e44a"/>
@@ -82,12 +82,12 @@ form.addEventListener('submit', async (e) => {
 
   const formData = new FormData(form);
 
-  try {
+/*  try {
     const res = await fetch('https://api.web3forms.com/submit',{
       method:'POST',
       body:formData
     });
-    const result = await res.json();
+    const result = await res.json();*/
 
     if(result.success){
       // Redirect to celebration page with name in URL

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎉 Happy Birthday!</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+/* ---------------- BODY ---------------- */
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100svh;
+  overflow-x: hidden;
+  background: linear-gradient(135deg, #ffecd2, #fcb69f);
+  font-family: 'Poppins', sans-serif;
+  color: #fff;
+}
+
+/* ---------------- CENTER TEXT ---------------- */
+.center-container {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  pointer-events: none;
+}
+
+h1 {
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  margin: 0;
+  padding: 16px 22px;
+  background: rgba(0,0,0,0.25);
+  border-radius: 18px;
+}
+
+/* ---------------- CANVAS ---------------- */
+canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100svh;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ---------------- FLOATING ELEMENTS ---------------- */
+.floating-element {
+  position: absolute;
+  pointer-events: none;
+  z-index: 5;
+  animation: floatUp linear forwards;
+  will-change: transform, opacity;
+  max-width: 90vw;
+}
+
+.floating-wish {
+  font-weight: 600;
+  text-shadow: 1px 1px 5px rgba(255,255,255,0.3);
+}
+
+@keyframes floatUp {
+  from {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-120svh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* ---------------- CAKE ---------------- */
+.cake {
+  position: relative;
+  width: 80px;
+  height: 60px;
+  background: #ff7f50;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.icing {
+  position: absolute;
+  top: -10px;
+  left: 0;
+  width: 100%;
+  height: 15px;
+  background: #fff;
+  border-radius: 50% 50% 0 0;
+}
+
+.candle {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  width: 8px;
+  height: 20px;
+  background: #fff;
+  transform: translateX(-50%);
+}
+
+.flame {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 10px;
+  background: radial-gradient(circle, #ff0, #ff8c00);
+  border-radius: 50%;
+  animation: flicker .3s infinite alternate;
+}
+
+@keyframes flicker {
+  50% { transform: translateX(-50%) scale(1.2); opacity: .8; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="center-container">
+  <h1 id="wish">🎉 Happy Birthday! 🎂</h1>
+</div>
+
+<canvas id="canvas"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+<script>
+/* ---------------- NAME FROM URL ---------------- */
+const params = new URLSearchParams(location.search);
+const name = params.get('name') || 'Friend';
+document.getElementById('wish').textContent = `🎉 Happy Birthday, ${name}! 🎂`;
+
+/* ---------------- CONFETTI ---------------- */
+const canvas = document.getElementById('canvas');
+const myConfetti = confetti.create(canvas, { resize: true });
+
+setInterval(() => {
+  myConfetti({
+    particleCount: 80,
+    spread: 360,
+    startVelocity: 30,
+    gravity: 0.8,
+    origin: { x: Math.random(), y: Math.random() * 0.6 }
+  });
+}, 1200);
+
+/* ---------------- MOBILE DETECTION ---------------- */
+const isMobile = window.innerWidth < 600;
+
+/* ---------------- FLOATING IMAGES ---------------- */
+const images = [
+  'https://raw.githubusercontent.com/DK18-DK18/DK-DK/main/IMG-20260124-WA0049.png',
+  'https://raw.githubusercontent.com/DK18-DK18/DK-DK/main/IMG-20260124-WA0043.png',
+  'https://raw.githubusercontent.com/DK18-DK18/DK-DK/main/IMG-20260124-WA0044.png',
+  'https://raw.githubusercontent.com/DK18-DK18/DK-DK/main/IMG-20260124-WA0045.png',
+  'https://raw.githubusercontent.com/DK18-DK18/DK-DK/main/IMG-20260124-WA0046.png',
+  'https://raw.githubusercontent.com/DK18-DK18/DK-DK/main/IMG-20260124-WA0047.png'
+];
+
+function createFloatingImage() {
+  const img = document.createElement('img');
+  img.src = images[Math.floor(Math.random() * images.length)];
+  img.className = 'floating-element';
+
+  img.style.left = Math.random() * 100 + 'vw';
+  img.style.bottom = '-60px';
+  img.style.animationDuration = (isMobile ? 8 : 6) + Math.random() * 3 + 's';
+  const maxSize = isMobile ? 80 : 160;
+  img.style.width = (60 + Math.random() * maxSize) + 'px';
+  img.style.border = '4px solid #fff';
+  img.style.borderRadius = '12px';
+  img.style.boxShadow = '0 5px 15px rgba(0,0,0,0.3)';
+
+  document.body.appendChild(img);
+  setTimeout(() => img.remove(), 10000);
+}
+setInterval(createFloatingImage, isMobile ? 1000 : 600);
+
+/* ---------------- FLOATING WISHES ---------------- */
+const wishes = ["🎉 Happy Birthday!", "🥳 Celebrate!", "✨ Shine Bright!", "🎈 Party Time!"];
+const colors = ['#2c3e50', '#1a1a2e', '#4b0082'];
+
+function createFloatingWish() {
+  const span = document.createElement('span');
+  span.className = 'floating-element floating-wish';
+  span.textContent = wishes[Math.floor(Math.random() * wishes.length)];
+  span.style.left = Math.random() * 100 + 'vw';
+  span.style.bottom = '-50px';
+  span.style.color = colors[Math.floor(Math.random() * colors.length)];
+  span.style.fontSize = (16 + Math.random() * 10) + 'px';
+  span.style.animationDuration = (isMobile ? 8 : 6) + Math.random() * 3 + 's';
+
+  document.body.appendChild(span);
+  setTimeout(() => span.remove(), 10000);
+}
+setInterval(createFloatingWish, isMobile ? 1400 : 800);
+
+/* ---------------- FLOATING CAKES ---------------- */
+function createFloatingCake() {
+  const container = document.createElement('div');
+  container.className = 'floating-element';
+  container.style.left = Math.random() * 100 + 'vw';
+  container.style.bottom = '-50px';
+  container.style.animationDuration = (isMobile ? 9 : 7) + 's';
+
+  const cake = document.createElement('div');
+  cake.className = 'cake';
+  const icing = document.createElement('div');
+  icing.className = 'icing';
+  const candle = document.createElement('div');
+  candle.className = 'candle';
+  const flame = document.createElement('div');
+  flame.className = 'flame';
+
+  candle.appendChild(flame);
+  cake.appendChild(icing);
+  cake.appendChild(candle);
+  container.appendChild(cake);
+  document.body.appendChild(container);
+
+  setTimeout(() => container.remove(), 12000);
+}
+setInterval(createFloatingCake, isMobile ? 3000 : 2000);
+</script>
+
+</body>
+</html>

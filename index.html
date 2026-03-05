@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>🎉 Welcome World </title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    margin:0; padding:0;
+    height:100vh;
+    display:flex; justify-content:center; align-items:center;
+    background: linear-gradient(135deg,#667eea,#764ba2);
+    color:#fff;
+  }
+
+  .container {
+    background: rgba(255,255,255,0.1);
+    padding: 30px;
+    border-radius: 15px;
+    width:90%;
+    max-width:400px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    text-align:center;
+  }
+
+  h1 { font-weight:600; margin-bottom:20px;}
+  input[type="text"]{
+    width:100%; padding:12px; border-radius:10px; border:none;
+    background:rgba(255,255,255,0.15); color:#fff; font-size:1rem;
+    margin-bottom:15px; text-align:center;
+  }
+  input[type="text"]::placeholder{ color:#ddd; }
+
+  button{
+    width:100%; margin-top:10px; padding:12px;
+    background:#6b5b95; border:none; border-radius:10px;
+    font-size:1.1rem; font-weight:600; color:#fff; cursor:pointer;
+    transition:background 0.3s ease;
+  }
+  button:hover{ background:#584a7d; }
+  button:disabled{ background:#999; cursor:not-allowed; }
+
+  #status{
+    margin-top:20px; font-weight:600; min-height:24px;
+    font-size:1.1rem;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>🎉 Write Your Name Dractor mam</h1>
+
+  <form id="wish-form" method="POST" action="https://api.web3forms.com/submit">
+    <input type="hidden" name="access_key" value="328d9a61-8ca6-4299-a848-920a40c4e44a"/>
+    <input type="text" name="username" placeholder="Write your name IAS" required />
+    <button type="submit">Submit</button>
+  </form>
+
+  <p id="status"></p>
+</div>
+
+<script>
+const form = document.getElementById('wish-form');
+const status = document.getElementById('status');
+const nameInput = form.querySelector('input[name="username"]');
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  if(!nameInput.value.trim()){
+    status.textContent = "Please enter your name!";
+    return;
+  }
+
+  status.textContent = "welcome to world... ⏳";
+  form.querySelector('button').disabled = true;
+
+  const formData = new FormData(form);
+
+  try {
+    const res = await fetch('https://api.web3forms.com/submit',{
+      method:'POST',
+      body:formData
+    });
+    const result = await res.json();
+
+    if(result.success){
+      // Redirect to celebration page with name in URL
+      const username = encodeURIComponent(nameInput.value.trim());
+      window.location.href = `celebration.html?name=${username}`;
+    } else {
+      status.textContent = "❌ Submission failed. Try again.";
+    }
+  } catch (err){
+    status.textContent = "❌ Network error. Check your connection.";
+  }
+
+  form.querySelector('button').disabled = false;
+});
+</script>
+
+</body>
+</html>
+
+
